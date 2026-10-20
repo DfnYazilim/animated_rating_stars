@@ -4,63 +4,25 @@ import 'package:flutter/material.dart';
 ///
 /// Users can interact with this widget to provide a rating.
 class AnimatedRatingStars extends StatefulWidget {
-  /// The initial rating for the widget.
   final double initialRating;
-
-  /// The minimum rating value.
   final double minRating;
-
-  /// The maximum rating value.
   final double maxRating;
-
-  /// The color for filled stars.
   final Color filledColor;
-
-  /// The color for empty stars.
   final Color emptyColor;
-
-  /// The icon used for filled stars.
   final Widget filledIcon;
-
-  /// The icon used for half-filled stars.
   final Widget halfFilledIcon;
-
-  /// The icon used for empty stars.
   final Widget emptyIcon;
-
-  /// A callback function called when the rating changes.
   final Function(double) onChanged;
-
-  // New properties
-
-  /// Determines whether to display the rating value.
   final bool displayRatingValue;
-
-  /// Determines whether to enable interactive tooltips.
   final bool interactiveTooltips;
-
-  /// The custom icon for filled stars.
   final Widget customFilledIcon;
-
-  /// The custom icon for half-filled stars.
   final Widget customHalfFilledIcon;
-
-  /// The custom icon for empty stars.
   final Widget customEmptyIcon;
-
-  /// The size of each star.
   final double starSize;
-
-  /// The duration of the animation when the rating changes.
   final Duration animationDuration;
-
-  /// The curve for the animation when the rating changes.
   final Curve animationCurve;
-
-  /// Determines whether the widget is read-only.
   final bool readOnly;
 
-  /// Creates an [AnimatedRatingStars] widget.
   const AnimatedRatingStars({
     super.key,
     this.initialRating = 0.0,
@@ -68,9 +30,9 @@ class AnimatedRatingStars extends StatefulWidget {
     this.maxRating = 5.0,
     this.filledColor = Colors.amber,
     this.emptyColor = Colors.grey,
-    this.filledIcon = Icon(Icons.star),
-    this.halfFilledIcon = Icon(Icons.star_half),
-    this.emptyIcon = Icon(Icons.star_border),
+    this.filledIcon = const Icon(Icons.star),
+    this.halfFilledIcon = const Icon(Icons.star_half),
+    this.emptyIcon = const Icon(Icons.star_border),
     required this.onChanged,
     this.displayRatingValue = true,
     this.interactiveTooltips = false,
@@ -106,12 +68,12 @@ class _AnimatedRatingStarsState extends State<AnimatedRatingStars> {
             if (!widget.readOnly) {
               double selectedRating = index.toDouble() + 1.0;
               if (_rating == selectedRating && widget.interactiveTooltips) {
-                _rating -= 0.5; // Toggle half-star state
+                _rating -= 0.5;
               } else {
                 _rating = selectedRating;
               }
               widget.onChanged(_rating);
-              setState(() {}); // Rebuild widget to reflect changes
+              setState(() {});
             }
           },
           child: AnimatedStar(
@@ -132,48 +94,27 @@ class _AnimatedRatingStarsState extends State<AnimatedRatingStars> {
   }
 }
 
-/// A single animated star widget.
 class AnimatedStar extends StatefulWidget {
-  /// Determines whether the star is filled.
   final bool filled;
-
-  /// Determines whether the star is half-filled.
   final bool halfFilled;
-
-  /// The color for filled stars.
   final Color filledColor;
-
-  /// The color for empty stars.
   final Color emptyColor;
-
-  /// The icon used for filled stars.
   final Widget filledIcon;
-
-  /// The icon used for half-filled stars.
   final Widget halfFilledIcon;
-
-  /// The icon used for empty stars.
   final Widget emptyIcon;
-
-  /// The size of the star.
   final double starSize;
-
-  /// The duration of the animation when the star state changes.
   final Duration animationDuration;
-
-  /// The curve for the animation when the star state changes.
   final Curve animationCurve;
 
-  /// Creates an [AnimatedStar] widget.
   const AnimatedStar({
     super.key,
     this.filled = false,
     this.halfFilled = false,
     this.filledColor = Colors.amber,
     this.emptyColor = Colors.grey,
-    this.filledIcon = Icon(Icons.star),
-    this.halfFilledIcon = Icon(Icons.star_half),
-    this.emptyIcon = Icon(Icons.star_border),
+    this.filledIcon = const Icon(Icons.star),
+    this.halfFilledIcon = const Icon(Icons.star_half),
+    this.emptyIcon = const Icon(Icons.star_border),
     this.starSize = 30.0,
     this.animationDuration = const Duration(milliseconds: 300),
     this.animationCurve = Curves.easeInOut,
@@ -232,18 +173,22 @@ class _AnimatedStarState extends State<AnimatedStar>
     return AnimatedBuilder(
       animation: _animation,
       builder: (context, child) {
-        return Icon(
-          widget.filled
+        // Icon() içine Widget koyamayız.
+        // Bunun yerine animasyon değerlerini IconTheme ile altındaki Widget'a aktarıyoruz.
+        return IconTheme(
+          data: IconThemeData(
+            color: Color.lerp(
+              widget.emptyColor,
+              widget.filledColor,
+              _animation.value,
+            ),
+            size: widget.starSize + (8.0 * _animation.value),
+          ),
+          child: widget.filled
               ? widget.filledIcon
               : widget.halfFilled
-                  ? widget.halfFilledIcon
-                  : widget.emptyIcon,
-          color: Color.lerp(
-            widget.emptyColor,
-            widget.filledColor,
-            _animation.value,
-          ),
-          size: widget.starSize + 8.0 * _animation.value,
+              ? widget.halfFilledIcon
+              : widget.emptyIcon,
         );
       },
     );
