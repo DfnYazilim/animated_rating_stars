@@ -20,13 +20,13 @@ class AnimatedRatingStars extends StatefulWidget {
   final Color emptyColor;
 
   /// The icon used for filled stars.
-  final IconData filledIcon;
+  final Widget filledIcon;
 
   /// The icon used for half-filled stars.
-  final IconData halfFilledIcon;
+  final Widget halfFilledIcon;
 
   /// The icon used for empty stars.
-  final IconData emptyIcon;
+  final Widget emptyIcon;
 
   /// A callback function called when the rating changes.
   final Function(double) onChanged;
@@ -40,13 +40,13 @@ class AnimatedRatingStars extends StatefulWidget {
   final bool interactiveTooltips;
 
   /// The custom icon for filled stars.
-  final IconData customFilledIcon;
+  final Widget customFilledIcon;
 
   /// The custom icon for half-filled stars.
-  final IconData customHalfFilledIcon;
+  final Widget customHalfFilledIcon;
 
   /// The custom icon for empty stars.
-  final IconData customEmptyIcon;
+  final Widget customEmptyIcon;
 
   /// The size of each star.
   final double starSize;
@@ -147,13 +147,13 @@ class AnimatedStar extends StatefulWidget {
   final Color emptyColor;
 
   /// The icon used for filled stars.
-  final IconData filledIcon;
+  final Widget filledIcon;
 
   /// The icon used for half-filled stars.
-  final IconData halfFilledIcon;
+  final Widget halfFilledIcon;
 
   /// The icon used for empty stars.
-  final IconData emptyIcon;
+  final Widget emptyIcon;
 
   /// The size of the star.
   final double starSize;
